@@ -1,0 +1,52 @@
+---
+title: "data_wrangling_ii"
+output: html_document
+date: '2023-10-12'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(rvest)
+library(httr)
+```
+
+## Loading data from the web 
+
+```{r}
+url = "http://samhda.s3-us-gov-west-1.amazonaws.com/s3fs-public/field-uploads/2k15StateFiles/NSDUHsaeShortTermCHG2015.htm"
+drug_use_html = read_html(url)
+
+drug_use_html
+
+marj_use_df = 
+drug_use_html |>
+  html_table() |> 
+  first() |> 
+  slice(-1) ## removes the first row 
+#marj_use_df
+```
+
+## Import star wars dataset 
+
+```{r}
+swm_html = 
+  read_html("https://www.imdb.com/list/ls070150896/")
+```
+
+```{r}
+swm_html |> 
+  html_elements(".lister-item-header a") |> 
+  html_text()
+
+gross_rev_vec = 
+  swm_html |>
+  html_elements(".text-small:nth-child(7) span:nth-child(5)") |>
+  html_text()
+
+
+```
+
